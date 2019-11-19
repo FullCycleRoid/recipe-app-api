@@ -20,8 +20,13 @@ class AdminSiteTests(TestCase):
             name='Test User Full Name',
         )
 
+    def test_admin_index(self):
+        url = reverse('admin:index')
+        res = self.client.get(url)
+        self.assertEqual(res.status_code, 200)
+
     def test_users_listed(self):
-        """Test that users are listed on the user page"""
+        """Test that user are listed on the user page"""
         url = reverse('admin:core_user_changelist')
         res = self.client.get(url)
 
