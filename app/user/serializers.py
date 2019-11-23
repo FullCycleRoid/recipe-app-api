@@ -19,6 +19,7 @@ class UserSerializers(serializers.ModelSerializer):
         def update(self, instance, validated_data):
             """Update a user, setting the password correctly and return it"""
             password = validated_data.pop('password', None)
+            instance.model_method() #Check this out!
             user = super().update(instance, validated_data)
 
             if password:
@@ -44,7 +45,7 @@ class AuthTokenSerializer(serializers.Serializer):
         user = authenticate(
             request=self.context.get('request'),
             username=email,
-            password=password
+            password=password,
         )
         if not user:
             msg = _('Unable to authenticate with provided credentials')

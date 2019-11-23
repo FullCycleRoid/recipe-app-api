@@ -35,7 +35,7 @@ class PublicUserApiTest(TestCase):
         self.assertNotIn('password', res.data)
 
     def test_user_exist(self):
-        """Test createing a user tha already exists fails"""
+        """Test creating a user tha already exists fails"""
         payload = {'email': "123@mail.com", 'password': 'testpass'}
         create_user(**payload)
 
@@ -44,7 +44,7 @@ class PublicUserApiTest(TestCase):
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_passwords_too_short(self):
-        """Test that passwors must be more then 5 characters"""
+        """Test that passwords must be more then 5 characters"""
         payload = {'email': "123@mail.com", 'password': 'pw'}
         res = self.client.post(CREATE_USER_URL, payload)
 
@@ -73,7 +73,7 @@ class PublicUserApiTest(TestCase):
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_token_no_user(self):
-        """Test thet token is not created if user doesn't exist"""
+        """Test that token is not created if user doesn't exist"""
         payload = {"email": '123@1334.com', 'password': 'testpass'}
 
         res = self.client.post(TOKEN_URL, payload)
@@ -81,21 +81,22 @@ class PublicUserApiTest(TestCase):
         self.assertNotIn('token', res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def create_token_mising_field(self):
+    def create_token_missing_field(self):
         """Test that email and password are required"""
 
         res = self.client.post(TOKEN_URL, {'email': 'one', 'password': ''})
         self.assertNotIn('token', res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_retrive_user_unautherize(self):
+    def test_retrieve_user_unauthorized(self):
         """Test thet authentication is required for user"""
         res = self.client.get(ME_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
+
 class PrivatUserApiTests(TestCase):
-    """Test API requests that require authenticaton"""
+    """Test API requests that require authentication"""
 
     def setUp(self):
         self.user = create_user(
