@@ -5,10 +5,10 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from core.models import Tag
-from recipe.serializers import TagSerializer
-
+from .. import serializers
 
 TAGS_URL = reverse('recipe:tag-list')
+
 
 class PublicApiTest(TestCase):
     """Test that publicly available tags API"""
@@ -21,6 +21,7 @@ class PublicApiTest(TestCase):
         res = self.client.get(TAGS_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
 
 class PrivateApiTest(TestCase):
     """Test the authorized user tags API"""
@@ -41,7 +42,7 @@ class PrivateApiTest(TestCase):
         res = self.client.get(TAGS_URL)
 
         tags = Tag.objects.all().order_by('-name')
-        serializer = TagSerializer(tags, namy=True)
+        serializer = serializers.TagSerializer(tags, namy=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
