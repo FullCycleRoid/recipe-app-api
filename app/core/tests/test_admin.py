@@ -10,8 +10,8 @@ class AdminSiteTests(TestCase):
     def setUp(self):
         self.client = Client()
         self.admin_user = get_user_model().objects.create_superuser(
-            email='admin@londonappdev.com',
-            password='password123'
+            email='zxc@zxc.com',
+            password='4we3wd4d'
         )
         self.client.force_login(self.admin_user)
         self.user = get_user_model().objects.create_user(
@@ -26,7 +26,7 @@ class AdminSiteTests(TestCase):
         self.assertEqual(res.status_code, 200)
 
     def test_users_listed(self):
-        """Test that user are listed on the user page"""
+        """Test that users are listed on the user page"""
         url = reverse('admin:core_user_changelist')
         res = self.client.get(url)
 
